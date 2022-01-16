@@ -1,0 +1,146 @@
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <table>
+        <tr>
+            <div>
+                <td>Full Name:</td>
+            <td><input id="fullName" type="text" formControlName="fullName" (blur)="logValidationErrors()" />
+                <!-- <span *ngIf="employeeForm.get('fullName')?.errors && (employeeForm.get('fullName')?.touched || employeeForm.get('fullName')?.dirty) ">
+                            <span *ngIf="employeeForm.get('fullName')?.errors?.['required']">Full name is required</span>
+                            <span *ngIf="employeeForm.get('fullName')?.errors?.['minlength'] || employeeForm.get('fullName')?.errors?.['maxlength'] ">
+                                Name must be between 2 t0 100 Characters
+                            </span> 
+    +                   </span> -->
+                <span style="color: red;" *ngIf="formError?.['fullName'] ">
+                    <span>{{formError?.['fullName']}}</span>
+                </span>
+                <span>{{"Number of characters:"+fullNameLength }}</span>
+            </td>
+            </div>
+        </tr>
+        <br>
+        <tr>
+            <td>
+                <div>
+                    <label>Contact Preference:</label>
+                    <input id="contactPreference" type="radio" (click)="onContactPrefrenceChange('phone')"
+                        formControlName="contactPreference" value="phone" /><label>Phone</label>
+                    <input id="contactPreference" type="radio" (click)="onContactPrefrenceChange('email')"
+                        formControlName="contactPreference" value="email" /><label>Email</label>
+                </div>
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <div div formGroupName='emailGroup'>
+                <div>
+                    <td>Email:</td>
+                    <td>
+    
+                        <input id="email" type="text" formControlName="email" (blur)="logValidationErrors()" />
+                        <span style="color: red;" *ngIf="formError?.['email']">
+                            <span>{{formError?.['email']}}</span>
+                        </span>
+                        <!-- <span *ngIf="employeeForm.get('email')?.errors?.['emailDomain']">
+                                    Inavalid domain, domain should be @arya.com
+                                </span> -->
+    
+                    </td>
+                </div>
+                <div>
+                    <td>confirm Email</td>
+                    <td>
+                        <input id="confirmEmail" type="text" formControlName="confirmEmail"
+                            (blur)="logValidationErrors()" />
+                        <span style="color: red;" *ngIf="formError?.['confirmEmail'] || formError?.['emailGroup'] ">
+                            <span>
+                                {{formError?.['confirmEmail']?formError?.['confirmEmail']:formError?.['emailGroup']}}
+                            </span>
+                        </span>
+                        <!-- <span *ngIf="employeeForm.get('email')?.errors?.['emailDomain']">
+                                Inavalid domain, domain should be @arya.com
+                            </span> -->
+                    </td>
+                </div>
+            </div>
+            <div>
+                <td>Phone:</td>
+                <td>
+                    <input id="email" type="text" formControlName="phone" (blur)="logValidationErrors()" />
+                    <span style="color: red;" *ngIf="formError?.['phone']">
+                        <span>{{formError?.['phone']}}</span>
+                    </span>
+    
+                </td>
+            </div>
+        </tr>
+        <br>
+        <br>
+        <tr>
+            <td>
+                <div *ngIf="this.employeeForm!=null">
+                    <div>
+                        <td><button [disabled]="employeeForm.get('skills')?.invalid" (click)="addSkillButtonClick()">Add New Skill</button></td>
+                    </div>
+                    <div formArrayName="skills" *ngFor="let skill of test().controls; let i = index">
+                        <hr *ngIf="i>0">
+                        <div [formGroupName]="i">
+    <!-- or use [id]="'skillName'+i"  i.e you can use property binding as well. -->
+                            <div>
+                                Skill Name: <input type="text" id="{{'skillName'+i}}"  formControlName="skillName" />
+                                <div *ngIf=" getFormArrayLength() > 1 ">
+                                    <button (click)="removeSkillButtonClick(i)">
+                                        Delete Skill
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <!-- <span *ngIf="formError?.['skillName']">
+                                    {{formError?.['skillName']}}
+                                </span> -->
+                                <span style="color: red;" *ngIf="skill.get('skillName')?.errors?.['required'] && skill.get('skillName')?.touched">
+                                   required
+                                </span>
+                            </div>
+                            <div>
+                                <br>
+                                Experience In Years: <input type="text" id="experienceInYears"
+                                formControlName="experienceInYears" (blur)="logValidationErrors()" />
+
+                                <div>
+                                    <span style="color: red;" *ngIf="skill.get('experienceInYears')?.errors?.['required'] && skill.get('experienceInYears')?.touched">
+                                        required
+                                    </span>
+                                </div>
+                            </div>
+                            <br>
+                            <div>
+                                <label>PROFICIENCY</label>
+                                <input id="beginner" type="radio" formControlName="proficiency"
+                                    value="beginner" /><label>Beginner</label>
+                                <input id="beginner" type="radio" formControlName="proficiency"
+                                    value="intermediate" /><label>Intermediate</label>
+                                <input id="beginner" type="radio" formControlName="proficiency"
+                                    value="professional" /><label>Professional</label>
+                            </div>
+                            <div>
+                                <span style="color: red;" *ngIf="skill.get('proficiency')?.errors?.['required'] && skill.get('proficiency')?.touched">
+                                        required
+                                </span>
+                            </div>
+                        </div> 
+                        
+                    </div> 
+                </div>
+
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <td><button type="submit" [disabled]="employeeForm.invalid">Submit</button></td>
+            <td><button (click)="oNLoadDataClick()">Load data</button></td>
+        </tr>
+        <br>
+    </table>
+
+</form>
